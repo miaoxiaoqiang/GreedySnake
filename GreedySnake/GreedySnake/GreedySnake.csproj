@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8AB3A1A3-C753-4E6D-930A-5222EFEDC77A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>GreedySnake</RootNamespace>
+    <AssemblyName>GreedySnake</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>GreedySnake.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AttachedProperty\AttachedProperties.cs" />
+    <Compile Include="Componets\BombPlay.xaml.cs">
+      <DependentUpon>BombPlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Componets\MaskMessageBox.xaml.cs">
+      <DependentUpon>MaskMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\NumberToResultText.cs" />
+    <Compile Include="Converters\SecondToHMS.cs" />
+    <Compile Include="Core\Direction.cs" />
+    <Compile Include="Core\GameItem.cs" />
+    <Compile Include="Core\GameSignal.cs" />
+    <Compile Include="Core\IndexPoint.cs" />
+    <Compile Include="Core\ItemType.cs" />
+    <Compile Include="Core\NodeType.cs" />
+    <Compile Include="Core\Snake.cs" />
+    <Compile Include="Core\SnakeGame.cs" />
+    <Compile Include="Core\SnakeNode.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Model\GameData.cs" />
+    <Compile Include="Utils\Utils.cs" />
+    <Page Include="Componets\BombPlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Componets\MaskMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converters\PathToImageBrush.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Resources\Style\Fonts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Style\Things.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Notify\NotifyPropertyBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="GreedySnake.snk" />
+    <Resource Include="Resources\Fonts\SVGfont.ttf" />
+    <Resource Include="Resources\Images\Btn_5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Sounds\Bombing.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Sounds\Dead.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Sounds\Eat.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Btn_bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Btn_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\bg_6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ball-1.png" />
+    <Resource Include="Resources\Images\ball-2.png" />
+    <Resource Include="Resources\Images\ball-3.png" />
+    <Resource Include="Resources\Images\ball-4.png" />
+    <Resource Include="Resources\Images\ball-5.png" />
+    <Resource Include="Resources\Images\ball-6.png" />
+    <Resource Include="Resources\Images\ball-7.png" />
+    <Resource Include="Resources\Images\ball-8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Bomb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\BodyNode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\BodyCorner.png" />
+    <Resource Include="Resources\Images\Foot.png" />
+    <Resource Include="Resources\Images\Head.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Bombing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Wall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Btn_6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Music_Off.png" />
+    <Resource Include="Resources\Images\Music_On.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Diamond.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Potion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\mask.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\close.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

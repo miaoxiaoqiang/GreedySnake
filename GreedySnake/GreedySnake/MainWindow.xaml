@@ -1,0 +1,300 @@
+﻿<Window x:Class="GreedySnake.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GreedySnake"
+        xmlns:CustomConverter="clr-namespace:GreedySnake.Converters"
+        xmlns:CustomAttachedProperties="clr-namespace:GreedySnake.AttachedProperty"
+        xmlns:CustomControl ="clr-namespace:GreedySnake.Componets"
+        mc:Ignorable="d"
+        Title="贪吃蛇" AllowsTransparency="True"
+        Background="{x:Null}" Height="666" Width="850"
+        WindowStyle="None" WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="False" Loaded="Window_Loaded"
+        ResizeMode="NoResize" FontFamily="{StaticResource UIFont}">
+    <Window.Resources>
+        <Style x:Key="linkstyle" TargetType="Hyperlink">
+            <Setter Property ="Foreground" Value ="#209AC2" />
+            <!-- 清除文字修饰(去掉下划线) -->
+            <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property ="Foreground" Value="Red" />
+                    <!-- 在鼠标悬停时显示下划线 -->
+                    <Setter Property="TextBlock.TextDecorations">
+                        <Setter.Value>
+                            <TextDecorationCollection>
+                                <TextDecoration Location ="Baseline" />
+                            </TextDecorationCollection>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="2, 0, 0, 0"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Width" Value="94"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}">
+                            <TextBlock x:Name="txt" Text="{TemplateBinding Content}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" FontFamily="{StaticResource UIFont}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter TargetName="txt" Property="Control.Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="{Binding Path=., Converter={x:Static CustomConverter:PathToImageBrush.Instance}, ConverterParameter='/Resources/Images/Btn_5.png'}"/>
+                                <Setter TargetName="txt" Property="Control.Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="UserInfo" TargetType="TextBox">
+            <Setter Property="CustomAttachedProperties:AttachedProperties.HeadText" Value="{x:Null}"/>
+            <Setter Property="Margin" Value="10, 0, 0, 0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid VerticalAlignment="Center">
+                            <Image Source="/Resources/Images/Btn_bg.png"
+                                   Width="112" Height="30"
+                                   SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0, 0, 0">
+                                <TextBlock Text="{TemplateBinding CustomAttachedProperties:AttachedProperties.HeadText}"
+                                           Foreground="White"
+                                           FontFamily="{StaticResource UIFont}"/>
+                                <TextBlock Text="{TemplateBinding Text}"
+                                           Foreground="White" FontFamily="{StaticResource UIFont}" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style> 
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="600"/>
+            <ColumnDefinition Width="250"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="62"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="0" Grid.ColumnSpan="2"
+                    VerticalAlignment="Center">
+            <Image x:Name="Logo" Source="/Resources/Images/Logo.png"
+                   Width="79" Height="57"
+                   Cursor="Hand"
+                   SnapsToDevicePixels="True"
+                   RenderOptions.BitmapScalingMode="HighQuality"/>
+            <TextBox Text="{Binding Level, Mode=OneWay}"
+                     CustomAttachedProperties:AttachedProperties.HeadText="等级："
+                     Style="{StaticResource UserInfo}"/>
+            <TextBox Text="{Binding Score, Mode=OneWay}"
+                     CustomAttachedProperties:AttachedProperties.HeadText="积分："
+                     Style="{StaticResource UserInfo}"/>
+            <TextBox Text="{Binding Bombs, Mode=OneWay}"
+                     CustomAttachedProperties:AttachedProperties.HeadText="吃雷："
+                     Style="{StaticResource UserInfo}"/>
+            <TextBox Text="{Binding DestroyedItems, Mode=OneWay}"
+                     CustomAttachedProperties:AttachedProperties.HeadText="破坏："
+                     Style="{StaticResource UserInfo}"/>
+            <TextBox Text="{Binding Duration, Mode=OneWay,Converter={x:Static CustomConverter:SecondToHMS.Instance}, ConverterParameter='Time'}"
+                     CustomAttachedProperties:AttachedProperties.HeadText="用时："
+                     Style="{StaticResource UserInfo}"/>
+            <CheckBox  Margin="10, 0, 0, 0"
+                       VerticalAlignment="Center"
+                       IsChecked="{Binding PlayMusic, Mode=TwoWay}">
+                <CheckBox.Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="CheckBox">
+                                    <Image x:Name="Music"
+                                           Source="/Resources/Images/Music_Off.png"
+                                           Width="30" Height="30"
+                                           SnapsToDevicePixels="True"
+                                           RenderOptions.BitmapScalingMode="HighQuality" ToolTip="音乐：关"/>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter TargetName="Music" Property="ToolTip" Value="音乐：开"/>
+                                            <Setter TargetName="Music" Property="Source" Value="/Resources/Images/Music_On.png"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </CheckBox.Style>
+            </CheckBox>
+        </StackPanel>
+        <Canvas Focusable="True" x:Name="gameArea"
+                Grid.Row="1" Grid.Column="0"
+                SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Width="600" Height="600"/>
+        <Grid Grid.Row="1" Grid.Column="1"
+              HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="425"/>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="45"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="568"/>
+                <ColumnDefinition Width="32"/>
+            </Grid.ColumnDefinitions>
+            <ToggleButton Grid.Column="0"
+                          Grid.ColumnSpan="2" Grid.Row="0"
+                          Margin="0, -5, 0, 0"
+                          Width="300" Height="380"
+                          HorizontalAlignment="Left" VerticalAlignment="Top">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <Border BorderThickness="0" Background="Transparent"
+                                            Margin="0"
+                                            Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                        <StackPanel Orientation="Horizontal" Margin="0">
+                                            <Border x:Name="border" BorderThickness="0"
+                                                    Width="154" Height="190"
+                                                    Padding="15" VerticalAlignment="Top" SnapsToDevicePixels="True">
+                                                <Border.Background>
+                                                    <ImageBrush ImageSource="/Resources/Images/bg_6.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                </Border.Background>
+                                                <TextBlock Foreground="White" FontFamily="{StaticResource UIFont}"
+                                                           TextWrapping="WrapWithOverflow" TextTrimming="CharacterEllipsis">
+                                                    <Run>使用说明</Run>
+                                                    <LineBreak/>
+                                                    <Run>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;向左：←(方向键)</Run>
+                                                    <LineBreak/>
+                                                    <Run>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;向右：→(方向键)</Run>
+                                                    <LineBreak/>
+                                                    <Run>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;向下：↓(方向键)</Run>
+                                                    <LineBreak/>
+                                                    <Run>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;向上：↑(方向键)</Run>
+                                                    <LineBreak/>
+                                                    <Run>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;暂停/继续：SPACE</Run>
+                                                    <LineBreak/>
+                                                    <Run>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;食物：吃掉不同颜色的食物会增加不同的积分</Run>
+                                                    <LineBreak/>
+                                                    <Run>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;炸弹：炸弹可破坏除食物之外的所有物品，谨慎使用</Run>
+                                                    <LineBreak/>
+                                                    <Run>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;砖墙：蛇头碰到砖墙就会结束游戏</Run>
+                                                    <LineBreak/>
+                                                    <LineBreak/>
+                                                    <Run Foreground="Yellow">&#xa0;&#xa0;&#xa0;&#xa0;注意：</Run>
+                                                    <Run Foreground="#FFF76722">本游戏仅用于编程学习交流，切勿用于商业用途。</Run>
+                                                    <LineBreak/>
+                                                    <Run Foreground="#FFF76722">&#xa0;&#xa0;&#xa0;&#xa0;本游戏所用到的素材均来自互联网。</Run>
+                                                    <!--<LineBreak/>
+                                                    <LineBreak/>
+                                                    <Run>&#xa0;&#xa0;第三方库：</Run>
+                                                    <LineBreak/>
+                                                    <Hyperlink ToolTip="GIF动画库" Style="{StaticResource linkstyle}"
+                                                               NavigateUri="https://github.com/XamlAnimatedGif/WpfAnimatedGif"
+                                                               RequestNavigate="Hyperlink_RequestNavigate">
+                                                        &#xa0;&#xa0;WpfAnimatedGif
+                                                    </Hyperlink>-->
+                                                </TextBlock>
+                                            </Border>
+                                            <!--<Border x:Name="button"
+                                                        BorderThickness="0"
+                                                        Margin="-5, 0, 0, 0"
+                                                        Width="30" Height="30"
+                                                        VerticalAlignment="Top" HorizontalAlignment="Left"
+                                                        SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality"
+                                                        Background="{Binding Path=., Converter={x:Static CustomConverter:PathToImageBrush.Instance}, ConverterParameter='/Resources/Images/btn_4.png'}"/>-->
+                                        </StackPanel>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <!--<MultiTrigger>
+                                              <MultiTrigger.Conditions>
+                                                  <Condition Property="IsChecked" Value="True" />
+                                                  <Condition Property="IsMouseOver" Value="True" />
+                                              </MultiTrigger.Conditions>
+                                              <Setter TargetName="border" Property="Width" Value="235"/>
+                                              <Setter TargetName="border" Property="Height" Value="250"/>
+                                              <Setter TargetName="button" Property="Background" Value="{Binding Path=., Converter={x:Static CustomConverter:PathToImageBrush.Instance}, ConverterParameter='/Resources/Images/btn_3.png'}"/>
+                                              <Setter TargetName="button" Property="Margin" Value="-1, 5, 0, 0"/>
+                                          </MultiTrigger>
+                                          <MultiTrigger>
+                                              <MultiTrigger.Conditions>
+                                                  <Condition Property="IsChecked" Value="False" />
+                                                  <Condition Property="IsMouseOver" Value="True" />
+                                              </MultiTrigger.Conditions>
+                                              <Setter TargetName="button" Property="Cursor" Value="Hand"/>
+                                          </MultiTrigger>-->
+
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter TargetName="border" Property="Width" Value="235"/>
+                                            <Setter TargetName="border" Property="Height" Value="220"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    x:Name="BtnStart"
+                    Content="开始"
+                    IsEnabled="True"
+                    Background="{Binding Path=., Converter={x:Static CustomConverter:PathToImageBrush.Instance}, ConverterParameter='/Resources/Images/btn_1.png'}"
+                    Foreground="#FFbe6500"
+                    Style="{StaticResource ButtonStyle}">
+            </Button>
+            <Button Grid.Row="2"
+                    x:Name="BtnPause"
+                    Content="暂停" Grid.Column="0" Grid.ColumnSpan="2"
+                    IsEnabled="False"
+                    Background="{Binding Path=., Converter={x:Static CustomConverter:PathToImageBrush.Instance}, ConverterParameter='/Resources/Images/btn_2.png'}"
+                    Foreground="#FF0e72a8"
+                    Style="{StaticResource ButtonStyle}">
+            </Button>
+            <Button Grid.Row="3"
+                    x:Name="BtnStop"
+                    Content="结束" Grid.Column="0" Grid.ColumnSpan="2"
+                    IsEnabled="False"
+                    Background="{Binding Path=., Converter={x:Static CustomConverter:PathToImageBrush.Instance}, ConverterParameter='/Resources/Images/btn_2.png'}"
+                    Foreground="#FF1D69A3"
+                    Style="{StaticResource ButtonStyle}">
+            </Button>
+            <Button Grid.Row="4"
+                    x:Name="BtnExit"
+                    Content="退出" Grid.Column="0" Grid.ColumnSpan="2"
+                    IsEnabled="True"
+                    Background="{Binding Path=., Converter={x:Static CustomConverter:PathToImageBrush.Instance}, ConverterParameter='/Resources/Images/btn_6.png'}"
+                    Foreground="#FFD4EB22"
+                    Style="{StaticResource ButtonStyle}">
+            </Button>
+        </Grid>
+        <CustomControl:MaskMessageBox x:Name="Mask" Visibility="Collapsed"
+            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" />
+    </Grid>
+</Window>

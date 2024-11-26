@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+GreedySnake/.vs/
+GreedySnake/GreedySnake/.vs/
+GreedySnake/GreedySnake/bin/
+GreedySnake/GreedySnake/obj/
+GreedySnake/material/

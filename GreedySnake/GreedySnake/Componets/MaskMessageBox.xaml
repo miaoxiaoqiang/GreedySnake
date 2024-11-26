@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="GreedySnake.Componets.MaskMessageBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GreedySnake.Componets"
+             xmlns:CustomConverter="clr-namespace:GreedySnake.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="666" d:DesignWidth="850" Background="Transparent"
+             FontFamily="{StaticResource UIFont}">
+    <UserControl.Resources>
+        <Style x:Key="EndInfo" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0, 8, 0, 0"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Border Background="Black" Opacity="0" BorderThickness="0"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="238"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="34"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Panel.ZIndex="1"
+                       Foreground="White" FontWeight="Bold" FontSize="22"
+                       Text="游戏结束"
+                       HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+            <Image Grid.Row="0" Source="/Resources/Images/close.png" Panel.ZIndex="1"
+                   SnapsToDevicePixels="True" UseLayoutRounding="True" RenderOptions.BitmapScalingMode="HighQuality"
+                   Width="26" Height="26" Cursor="Hand" MouseLeftButtonDown="Image_MouseLeftButtonDown" ToolTip="关闭"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="335, 0, 0, 0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <RotateTransform Angle="0" CenterX="13" CenterY="13"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                             To="90" Duration="00:00:00.400" FillBehavior="Stop"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Border BorderThickness="0" Background="Transparent" Grid.Row="0" Grid.RowSpan="3">
+                <Image Source="/Resources/Images/mask.png"
+                       Width="396" Height="270"
+                       SnapsToDevicePixels="True" UseLayoutRounding="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="Black" Direction="30" Opacity="0.5" ShadowDepth="5"/>
+                </Border.Effect>
+            </Border>
+            <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0, 10, 0, 0">
+                <TextBlock DataContext="{Binding Path=DataContext.EndText, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"
+                           Style="{StaticResource EndInfo}">
+                    <Run Text="{Binding Path=[0], Mode=OneWay}"/><Run
+                         Text="{Binding Path=[1], Mode=OneWay}"/><Run
+                         Text="{Binding Path=[2], Mode=OneWay}"/><Run
+                         Text="{Binding Path=[3], Mode=OneWay}" Foreground="Red"/><Run
+                         Text="{Binding Path=[4], Mode=OneWay}" Foreground="Red"/><Run
+                         Text="{Binding Path=[5], Mode=OneWay}" Foreground="Red"/><Run
+                         Text="{Binding Path=[6], Mode=OneWay}" Foreground="Red"/><Run
+                         Text="{Binding Path=[7], Mode=OneWay}" Foreground="Red"/>
+                </TextBlock>
+                <TextBlock Text="{Binding Level, Mode=OneWay, Converter={x:Static CustomConverter:NumberToResultText.Instance}, ConverterParameter='Level'}"
+                           Style="{StaticResource EndInfo}"/>
+                <TextBlock Text="{Binding Beads, Mode=OneWay, Converter={x:Static CustomConverter:NumberToResultText.Instance}, ConverterParameter='Bead'}"
+                           Style="{StaticResource EndInfo}"/>
+                <TextBlock Text="{Binding Bombs, Mode=OneWay, Converter={x:Static CustomConverter:NumberToResultText.Instance}, ConverterParameter='Bombs'}"
+                           Style="{StaticResource EndInfo}"/>
+                <TextBlock Text="{Binding Score, Mode=OneWay, Converter={x:Static CustomConverter:NumberToResultText.Instance}, ConverterParameter='Score'}"
+                           Style="{StaticResource EndInfo}"/>
+                <TextBlock Text="{Binding Beads, Mode=OneWay, Converter={x:Static CustomConverter:NumberToResultText.Instance}, ConverterParameter='DestroyedItems'}"
+                           Style="{StaticResource EndInfo}"/>
+                <TextBlock Text="{Binding Duration, Mode=OneWay, Converter={x:Static CustomConverter:SecondToHMS.Instance}, ConverterParameter='Duration'}"
+                           Style="{StaticResource EndInfo}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

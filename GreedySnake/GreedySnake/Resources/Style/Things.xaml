@@ -1,0 +1,91 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ImageBrush x:Key="WhiteOrbs" ImageSource="/Resources/Images/ball-1.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="OrangeOrbs" ImageSource="/Resources/Images/ball-2.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="BlackOrbs" ImageSource="/Resources/Images/ball-3.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="RedOrbs" ImageSource="/Resources/Images/ball-4.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="YellowOrbs" ImageSource="/Resources/Images/ball-5.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="BlueOrbs" ImageSource="/Resources/Images/ball-6.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="GreenOrbs" ImageSource="/Resources/Images/ball-7.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="PurpleOrbs" ImageSource="/Resources/Images/ball-8.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+
+    <ImageBrush x:Key="Head" ImageSource="/Resources/Images/Head.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="Foot" ImageSource="/Resources/Images/Foot.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="Body" ImageSource="/Resources/Images/BodyNode.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="Corner" ImageSource="/Resources/Images/BodyCorner.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="Wall" ImageSource="/Resources/Images/Wall.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="Bomb" ImageSource="/Resources/Images/Bomb.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+    <ImageBrush x:Key="Potion" ImageSource="/Resources/Images/Potion.png"
+                RenderOptions.BitmapScalingMode="NearestNeighbor" ViewportUnits="RelativeToBoundingBox"/>
+
+    <Rectangle x:Key="Diamond" x:Name="Diamond1" Width="40" Height="40"
+               SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="HighQuality">
+        <Rectangle.Fill>
+            <ImageBrush ImageSource="/Resources/Images/Diamond.png" Stretch="None" TileMode="None"
+                        RenderOptions.BitmapScalingMode="HighQuality" ViewportUnits="RelativeToBoundingBox"/>
+        </Rectangle.Fill>
+        <Rectangle.RenderTransform>
+            <RotateTransform Angle="0" CenterX="20" CenterY="20"/>
+        </Rectangle.RenderTransform>
+        <!--第一种 事件触发器-->
+        <!--<Rectangle.Triggers>
+            <EventTrigger RoutedEvent="Rectangle.Loaded">
+                <BeginStoryboard>
+                    <Storyboard RepeatBehavior="Forever">
+                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                         From="0" To="360" Duration="0:0:2"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Rectangle.Triggers>-->
+        <!--第二种 样式触发器-->
+        <Rectangle.Style>
+            <Style TargetType="Rectangle">
+                <!--<Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="0" CenterX="20" CenterY="20"/>
+                    </Setter.Value>
+                </Setter>-->
+                <Style.Triggers>
+                    <!--第一种-->
+                    <Trigger Property="Visibility" Value="Visible">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard RepeatBehavior="Forever">
+                                    <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
+                                                     From="0" To="360" Duration="0:0:2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                    </Trigger>
+                    <!--第二种-->
+                    <!--<DataTrigger Binding="{Binding Path=Visibility, RelativeSource={RelativeSource Mode=Self}}" Value="Visible">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard RepeatBehavior="Forever">
+                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                 From="0" To="360" Duration="0:0:2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>-->
+                </Style.Triggers>
+            </Style>
+        </Rectangle.Style>
+    </Rectangle>
+</ResourceDictionary>
