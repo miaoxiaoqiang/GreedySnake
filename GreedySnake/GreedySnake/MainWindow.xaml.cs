@@ -167,15 +167,17 @@ namespace GreedySnake
         {
             if (game.Signal == GameSignal.PAUSE)
             {
-                BtnPause.Content = "继续";
-                stopWatch.Stop();
-                _gameThreadingTimer.Change(-1, Timeout.Infinite);
+                BtnPause.Content = "暂停";
+                game.PauseGame(false);
+                stopWatch.Start();
+                _gameThreadingTimer.Change(200, 400);
             }
             else if (game.Signal == GameSignal.GAMEING)
             {
-                BtnPause.Content = "暂停";
-                stopWatch.Start();
-                _gameThreadingTimer.Change(200, 400);
+                BtnPause.Content = "继续";
+                game.PauseGame(true);
+                stopWatch.Stop();
+                _gameThreadingTimer.Change(-1, Timeout.Infinite);
             }
         }
 
